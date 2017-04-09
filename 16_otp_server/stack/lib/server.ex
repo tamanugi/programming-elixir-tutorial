@@ -1,8 +1,7 @@
 defmodule Stack.Server do
   use GenServer
 
-  def handle_call(:pop, _from, current_stack) do
-    [head | tail] = current_stack
+  def handle_call(:pop, _from, [head | tail]) do
     { :reply, head, tail }
   end
 
