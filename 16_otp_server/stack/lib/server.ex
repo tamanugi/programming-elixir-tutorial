@@ -5,4 +5,8 @@ defmodule Stack.Server do
     { :reply, head, tail }
   end
 
+  def handle_cast({:push, new}, current_stack) do
+    { :noreply, [new | current_stack]}
+  end
+
 end
