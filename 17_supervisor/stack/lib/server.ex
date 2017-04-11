@@ -17,12 +17,21 @@ defmodule Stack.Server do
 
   ## GenServerの実装
 
-  def handle_call(:pop, _from, [head | tail]) do
-    { :reply, head, tail }
+  def init(stash_pid) do
+    current_stack = Stack.Stash.get_value stash_pid
+    { :ok, {current_stack, stash_pid}}
   end
 
-  def handle_cast({:push, new}, current_stack) do
-    { :noreply, [new | current_stack]}
+  def handle_call(:pop, _from, {[head | tail], stash_pid}) do
+    { :reply, head, { tail, stash_pid } }
+  end
+
+  def handle_cast({:push, new}, { current_stack, stash_pid }) do
+    { :noreply, { [new | current_stack], stash_pid }}
+  end
+
+  def terminate(_reason, {current_stack, stash_pid}) do
+    Stack.Stash.save_value stash_pid, current_stack
   end
 
 end
