@@ -5,7 +5,7 @@ defmodule Sequence.Application do
 
   use Application
 
-  def start(_type, _args) do
-    {:ok, _pid} = Sequence.Supervisor.start_link(123)
+  def start(_type, initail_number) do
+    {:ok, _pid} = Sequence.Supervisor.start_link(initail_number)
   end
 end
